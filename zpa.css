@@ -1,0 +1,38 @@
+/* Pathfinder Styles */
+body {
+	background-color: #c3b091;
+	padding: 15px;
+	}
+h1   {
+	color: blue;
+	}
+
+div.cf_wrapper {
+  position: absolute;
+  left: 10%;
+}
+	
+.r {
+	float: right;
+}
+
+.loginbox {
+	position: absolute;
+	width: 400px;
+	border: 1px solid #ddd;
+	left: 25%;
+	padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+ul.dev {
+	color: green;
+	font-size: large;
+}
