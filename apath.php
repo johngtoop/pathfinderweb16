@@ -19,7 +19,7 @@
 </head>
 	<body>
 	<h1>Pathfinders</h1>
-	<div class="login">[ <a href='plogin.php'><?php echo laction(); ?></a> ]</div>
+	<div class="loginbox">[ <a href='plogin.php'><?php echo laction(); ?></a> ]</div>
 	<p>The Pathfinder club started in the past century as the <em>MV</em> club and the focus has always been on Missionary Volunteer Youth.</p>
 	<img src="../pf/mvemblem.png" alt="Pathfinder Emblem" style="width:180px;height:188px;float:left;"} 
 	<p><h4>About this site</h4>
