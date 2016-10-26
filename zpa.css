@@ -2,6 +2,7 @@
 body {
 	background-color: #c3b091;
 	padding: 15px;
+	width: 800px
 	}
 h1   {
 	color: blue;
@@ -13,23 +14,24 @@ div.cf_wrapper {
 }
 	
 .r {
-	float: right;
+	text-align: right;
 }
 
 .loginbox {
-	position: absolute;
-	width: 400px;
-	border: 1px solid #ddd;
-	left: 25%;
-	padding: 10px;
+	float:right; 
+    clear:right; 
+	margin-top: -50px;
+	border: 1px solid #ccc;
+	padding: 2px;
 }
 
 table {
     border-collapse: collapse;
+	border: 1px solid black;
 }
 
-table, th, td {
-    border: 1px solid black;
+tr td {
+	border: 1px solid black;
 }
 
 ul.dev {

@@ -9,19 +9,11 @@
 	if (!$_POST) {
 		if (!$_SESSION) {
 			// Form to logon
-			echo "<!DOCTYPE html>";
-			echo "<html>";
-			echo "<head>";
-			echo "<meta charset='UTF-8'>";
-			echo "<title>Login Pathfinder</title>";
-			echo "<link rel='stylesheet' href='zpa.css'>";
-			echo "</head>";
-			echo "<body>";
-			echo "<form action='' method='post'>";
-			echo "<h2>Login Pathfinder</h2>";
+			echo tophtml();
+			
 			echo "<table>";
 			echo "	<tr>";
-			echo "		<td class='r'>Mail address:</td>";
+			echo "		<td class='r'>E-Mail Address:</td>";
 			echo "		<td><input type='text' name='pEmail' value='" . $pdmail . "'></td>";
 			echo "	</tr>";
 			echo "	<tr>";
@@ -35,14 +27,8 @@
 			echo "</table>Get";
 			echo "</form>";
 		} else {
-			// Log off
-			echo "<!DOCTYPE html>";
-			echo "<html>";
-			echo "<head>";
-			echo "  <link rel='stylesheet' href='../pf.css'>";
-			echo "	<meta http-equiv='refresh' content='3;url=apath.php' />";
-			echo "</head>";
-			echo "<body>";
+			// Log off ************************************ Log off **********************************
+			echo tophtmlr();
 			
 			session_unset(); 
 
@@ -90,18 +76,11 @@
 		
 		if($result = mysqli_query($link, $sql)){
 			if(mysqli_num_rows($result) > 0){
-				echo "<!DOCTYPE html>";
-				echo "<html>";
-				echo "<head>";
-				echo "<meta charset='UTF-8'>";
-				echo "<title>Login Pathfinder</title>";
-				echo "<link rel='stylesheet' href='zpa.css'>";
-				echo "	<meta http-equiv='refresh' content='12;url=apath.php' />";
-				echo "</head>";
-				echo "<body>";
-				echo "<form action='' method='post'>";
-				echo "<h2>Login Pathfinder</h2>";
-				echo "<a href='/'>Home</a>";
+
+				echo tophtmlr();
+				
+				//echo "<h2>Login Pathfinder</h2>";
+				//echo "<a href='/'>Home</a>";
 				//echo "query = " . $sql . "<br/>";
 				while($row = mysqli_fetch_array($result)) {
 					$_SESSION["pmId"] = $row["pmId"];
@@ -119,14 +98,15 @@
 				updatelastlogin($_SESSION['pmId']);
 			}
 			else {
-				echo "<br />User Name or Login invalid.<a href='login.php'>Try again</a><br /><a href='/'>Home</a>";
-				echo "quERy = " . $sql . "<br/>";
-				$_SESSION['pmId'] = "";
-				$_SESSION['pmName'] = "";
-				$_SESSION["pmClub"] = "";
-				$_SESSION['pmMail'] = "";
-				$_SESSION['pmRole'] = "";
+				/// ****************** Authentication failure ******************************
 				
+				echo tophtmlr();
+				
+				echo "<br />User Name or password invalid.<a href='plogin.php'>Try to login again</a><br /><a href='apath.php'>Pathfinder Home</a>";
+				//echo "quERy = " . $sql . "<br/>";
+				
+				session_destroy(); 
+								
 			}
 				
 		} else {
@@ -144,6 +124,35 @@
 		else
 			return false;
 		mysqli_close($linku);
+	}
+	
+	function tophtml() {
+		$t = "<!DOCTYPE html>";
+		$t = $t . "<html lang='en'>";
+		$t = $t . "<head>";
+		$t = $t . "<meta charset='UTF-8'>";
+		$t = $t . "<title>Create an account</title>";
+		$t = $t . "<link rel='stylesheet' href='zpa.css'>";
+		$t = $t . "</head>";
+		$t = $t . "<body>";
+		$t = $t . "<form action='' method='post'>";
+		$t = $t . "<h2>Login to Pathfinder site</h2>";
+		return $t;
+	}
+	
+	function tophtmlr() {
+		$t = "<!DOCTYPE html>";
+		$t = $t . "<html lang='en'>";
+		$t = $t . "<head>";
+		$t = $t . "<meta charset='UTF-8'>";
+		$t = $t . "<title>Create an account</title>";
+		$t = $t . "<link rel='stylesheet' href='zpa.css'>";
+		$t = $t . "	<meta http-equiv='refresh' content='2;url=apath.php' />";
+		$t = $t . "</head>";
+		$t = $t . "<body>";
+		$t = $t . "<form action='' method='post'>";
+		$t = $t . "<h2>Login to Pathfinder site</h2>";
+		return $t;
 	}
 ?>
 

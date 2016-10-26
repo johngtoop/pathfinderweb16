@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS paMembrs (
   pmActive bit DEFAULT 0,
   pmRole INT DEFAULT 14, 
   pmPwd VARCHAR(120) NOT NULL,
+  pmPwdDt TIMESTAMP DEFAULT NOW(),
   pmFamily INT NULL,
   pmLastLogin TIMESTAMP NULL);
   
