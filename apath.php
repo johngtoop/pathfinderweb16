@@ -9,6 +9,14 @@
 			return "Login";
 	}
 
+	function whologgedin() {
+		$myname = "";
+		if (isset($_SESSION["pmMail"])) {
+			$myname = "Hello " . $_SESSION["pmName"] . " (" . $_SESSION["pmMail"] . ")";
+			
+		}		
+		return $myname;
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -18,7 +26,7 @@
 <link rel='stylesheet' href='zpa.css'>
 </head>
 	<body>
-	<h1>Pathfinders</h1>
+	<h1>Pathfinders <?php echo whologgedin(); ?></h1>
 	<div class="loginbox">[ <a href='plogin.php'><?php echo laction(); ?></a> ]</div>
 	<p>The Pathfinder club started in the past century as the <em>MV</em> club and the focus has always been on Missionary Volunteer Youth.</p>
 	<img src="../pf/mvemblem.png" alt="Pathfinder Emblem" style="width:180px;height:188px;float:left;"} 
@@ -33,7 +41,7 @@
 	- we may figure out a way of using either the name or the email address as unique but we are still workng 
 	on that). The email is not necessary but used for login. It's not much good for regular pathfinders as there's 
 	nothing they can do if they login anyway. We are not sending emails (for now and no plans) so it's not really necessary.</p>
-	<p>The family/parent 
+	<p>The family/parent field
 	is intended to allow parents to manage the information of their kids and keeps multiple parents/grandparents etc. 
 	associated with only their kids. The password is encrypted so even people with access to the data cannot see what a 
 	password is. It is only used for authentication. It can be quite long but i only use the first hundred or so characters. 
@@ -57,12 +65,19 @@
 	<ul class="dev">
 		<li><a href="preg.php">Register new user</a></li>
 		<li><a href="plogin.php">Login</a></li>
+		<?php
+			if (laction()=="Logout") {
+				echo "<li><a href='changemypass.php'>Change Password</a></li>";
+				echo "<li><a href='ped.php'>Edit Members</a></li>";
+			}
+		?>
 	</ul>
 	<hr>
 	<ul>
 		<li><a href="../">Site Home</a></li>
 	</ul>
 	<hr>
-	&nbsp;User = <?php echo $_SESSION["pmMail"]; ?>
+	&nbsp;User = <?php echo $_SESSION["pmMail"]; ?><br />
+	Role = <?php echo $_SESSION["pmRole"]; ?>
 	</body>
 </html>

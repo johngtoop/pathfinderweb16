@@ -8,16 +8,8 @@
 	
 	
 	if (!$_POST ) {
-		echo "<!DOCTYPE html>";
-		echo "<html lang='en'>";
-		echo "<head>";
-		echo "<meta charset='UTF-8'>";
-		echo "<title>Create an account</title>";
-		echo "<link rel='stylesheet' href='zpa.css'>";
-		echo "</head>";
-		echo "<body>";
-		echo "<form action='' method='post'>";
-		echo "<h2>Register for Pathfinder site</h2>";
+		echo tophtml();
+		
 		echo "    <table>";
 		echo "		<tr>";
 		echo "			<td class='r'>E-Mail Address / Name (First Last)</td>";
@@ -39,7 +31,7 @@
 		echo "<input type='hidden' value='2' name='club' />";
 		echo "<br />";
 		echo "<p>Please do not worry about passwords for pathfinders. They do not need to login and have ";
-		echo "minimal rights even if they do login. Give them a name (first last) only.";
+		echo "minimal rights even if they do login. Give them a name (first last) only to prevent login.";
 		echo "<p>If the admin gives you rights, then you can change your Profile items such as your password or Name spelling.</p>";
 		echo "<p>Forget the password you assign? No problem, let me know and I'll reset it.</p>";
 		echo "<p><a href='plogin.php'>Login</a></p>";
@@ -54,7 +46,9 @@
 		
 		if (isvalid($usrEmail,$usrPwd)) {
 			// Connect
-			$link = mysqli_connect("johntoop.ca.mysql", "johntoop_ca", "fRed17t", "johntoop_ca");
+			require 'dbinfo.php';
+			$link = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
+			
 			// Check connection
 			if($link === false){
 				die("ERROR: Could not connect. " . mysqli_connect_error());
@@ -66,10 +60,11 @@
 			if (isemail($usrEmail) )
 				$sql = "INSERT INTO paMembrs (pmMail, pmClub, pmPwd, pmActive, pmRole ) VALUES (LOWER('$usrEmail'), $club , MD5('$usrPwd'), 0, 14)";
 			else
-				$sql = "INSERT INTO pfMembrs (pmName, pmClub, pfPwd, pmActive, pmRole )  VALUES ('$usrEmail' ,$club , MD5('$usrPwd'), 0, 14)";
+				$sql = "INSERT INTO paMembrs (pmName, pmClub, pmPwd, pmActive, pmRole )  VALUES ('$usrEmail' ,$club , MD5('$usrPwd'), 0, 14)";
 			
 			if(mysqli_query($link, $sql)){
-				echo "Pathfinder added successfully0.";
+				echo tophtml();
+				echo "Pathfinder added successfully.";
 			} else {
 				echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 			}
@@ -110,7 +105,9 @@
 	
 	function email_found($email) {
 		$numfound = -1;
-		$link = mysqli_connect("johntoop.ca.mysql", "johntoop_ca", "fRed17t", "johntoop_ca");
+		require 'dbinfo.php';
+		$link = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
+		
 		if($link === false){
 			die("ERROR: Could not connect. " . mysqli_connect_error());
 		}
@@ -128,6 +125,19 @@
 		return $numfound;
 	}
 
+	function tophtml() {
+		$t = "<!DOCTYPE html>";
+		$t = $t . "<html lang='en'>";
+		$t = $t . "<head>";
+		$t = $t . "<meta charset='UTF-8'>";
+		$t = $t . "<title>Create an account</title>";
+		$t = $t . "<link rel='stylesheet' href='zpa.css'>";
+		$t = $t . "</head>";
+		$t = $t . "<body>";
+		$t = $t . "<form action='' method='post'>";
+		$t = $t . "<h2>Register for Pathfinder site</h2>";
+		return $t;
+	}
 ?>
 
 
