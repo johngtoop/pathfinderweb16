@@ -1,9 +1,25 @@
 <?php
 	// ped.php   - Edit Members
+	session_start();
+	$role = $_SESSION['pmRole'];
+	$club = $_SESSION['pmClub'];
+	$name = "";
+	$email = "";
+	$ssql = ".";
+	$active = "";
+	$trole = "0";
+	$tfamily = 99;
+	echo "<br>role = " . $role;
+	echo "<br>Club = " . $club;
 
-	echo tophtml("Edit Members");
-	echo "</form></body></html>";
-	
+	if (($role == 6) || ($role == 2) || ($role == 3)) {
+		echo tophtml("Edit Members");
+		echo "</form></body></html>";
+	} else {
+		echo "Sorry .. not enough permissions.<br />";
+		echo "<a href='../pf.php'>Home</a>";
+	}
+
 	function tophtml($titl) {
 		$t = "<!DOCTYPE html>";
 		$t = $t . "<html lang='en'>";
