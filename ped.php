@@ -14,6 +14,7 @@
 
 	if (($role == 6) || ($role == 2) || ($role == 3)) {
 		echo tophtml("Edit Members");
+		echo "<br /><a href='apath.php'>Pathfinder Home</a>";
 		echo "</form></body></html>";
 	} else {
 		echo "Sorry .. not enough permissions.<br />";
@@ -30,6 +31,7 @@
 		$t = $t . "</head>";
 		$t = $t . "<body>";
 		$t = $t . "<form action='' method='post'>";
-		$t = $t . "<h2>Login to Pathfinder site</h2>";
+		$t = $t . "<h2>" . $titl . "</h2>";
 		return $t;
+	}
 ?>
