@@ -69,6 +69,7 @@
 			if (laction()=="Logout") {
 				echo "<li><a href='changemypass.php'>Change Password</a></li>";
 				echo "<li><a href='ped.php'>Edit Members</a></li>";
+				echo "<li><a href='pfam.php'>Edit Families</a></li>";
 			}
 		?>
 	</ul>
