@@ -9,10 +9,37 @@
 		if (!$_POST) {
 			echo tophtml("New Family");
 			echo newfamily();
+			echo showfamilys();
 			echo "</form></body></html>";
 		} else {
 		// This is posted ... lets save it 
-		echo "saving ... not!";
+		//echo "saving ... not!";
+		// *********************************** save family info if exists ********************
+		$FamilyName = trim($_POST['pfname']);
+		
+		if (isvalid($FamilyName)) {
+			// Connect
+			require 'dbinfo.php';
+			$link = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
+			
+			// Check connection
+			if($link === false){
+				die("ERROR: Could not connect. " . mysqli_connect_error());
+			}
+			 
+			// Escape user inputs for security
+			 
+			// attempt insert query execution
+			$sql = "INSERT INTO paFamily (pfName)  VALUES ('$FamilyName')";
+			
+			if(mysqli_query($link, $sql)){
+				echo tophtml("New Family");
+				echo "Family added successfully.";
+			} else {
+				echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+			}
+		}
+		// ***********************************************************************************
 		}
 	} else {
 		echo "not enough security ...";
@@ -20,6 +47,48 @@
 	echo "<hr>\n";
 	echo "<a href='apath.php'>Pathfinder Home</a>";
 	
+	// to be valid a family name must be longer than 1 letter long
+	function isvalid($nam) {
+		if (strlen($nam) < 2) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	// Show the families
+	function showfamilys() {
+		//SELECT pcId, pcName FROM pfClubs ORDER BY pcName
+		require 'dbinfo.php';
+		$link = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
+		
+		// Check connection
+		if($link === false){
+			die("ERROR: Could not connect. " . mysqli_connect_error());
+		}		 
+		// Attempt select query execution
+		$sql = "SELECT pfId, pfName FROM paFamily ORDER BY pfName";
+		if($resultc = mysqli_query($link, $sql)){
+			$ss = "";
+			if(mysqli_num_rows($resultc) > 0){
+				$ss = "<table>\n";
+				$ss .= "  <tr>\n";
+				$ss .= "    <th>Family ID</th><th>Name</th>\n";
+				$ss .= "  </tr>\n";
+				while($rowc = mysqli_fetch_array($resultc)){
+					$ss .= "  <tr>\n";
+					$ss .= "    <td>" . $rowc['pfId'] . "</td><td>" . $rowc['pfName'] . "</td>\n";
+					$ss .= "  </tr>\n";
+				}
+				$ss .= "</table>\n";
+				// Close result set
+				mysqli_free_result($resultc);
+			} 
+		}
+		mysqli_close($link);
+		return $ss;
+	}
+
 	// html for top of page
 	function tophtml($titl) {
 		$t = "<!DOCTYPE html>\n";
