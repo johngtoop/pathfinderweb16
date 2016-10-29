@@ -47,6 +47,7 @@
 	echo "<hr>\n";
 	echo "<a href='apath.php'>Pathfinder Home</a>";
 	
+	// to be valid a family name must be longer than 1 letter long
 	function isvalid($nam) {
 		if (strlen($nam) < 2) {
 			return false;
@@ -55,6 +56,7 @@
 		}
 	}
 	
+	// Show the families
 	function showfamilys() {
 		//SELECT pcId, pcName FROM pfClubs ORDER BY pcName
 		require 'dbinfo.php';
@@ -86,6 +88,7 @@
 		mysqli_close($link);
 		return $ss;
 	}
+
 	// html for top of page
 	function tophtml($titl) {
 		$t = "<!DOCTYPE html>\n";
