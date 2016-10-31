@@ -75,7 +75,7 @@
 			mysqli_close($link);
 		} else {
 			echo "<div class='alert'>Error! Password length must be at least 1 and email must be unique '" . $eml . "'/'" . $pwd . "'</div>";
-			echo "<a href='register.php'>Try again to register</a><br />";
+			echo "<a href='preg.php'>Try again to register</a><br />";
 			echo "<a href='/apath.php'>Home</a><br />";
 		}
 		

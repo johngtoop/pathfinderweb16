@@ -4,7 +4,8 @@
 	$myemail = "";
 	if(isset($_COOKIE[$cookiecheck])) {
 		$pdmail = $_COOKIE[$cookiecheck];
-	}
+	} else
+		$pdmail = "";
 	
 	if (!$_POST) {
 		if (!$_SESSION) {

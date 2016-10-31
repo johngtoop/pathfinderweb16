@@ -17,6 +17,37 @@
 		}		
 		return $myname;
 	}
+	
+	function NumInactive() {
+		//SELECT COUNT(*) AS NumInactive FROM `pamembrs` WHERE pmActive = 0
+		require 'dbinfo.php';
+		$linkc = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
+		// Check connection
+		if($linkc === false){
+			die("ERROR: Could not connect. " . mysqli_connect_error());
+		}
+		$ss = "";
+		// Query to find out if the $who can edit users
+		$sql = "SELECT COUNT(*) AS NumInactive FROM `paMembrs` WHERE pmActive = 0 ";
+		// Attempt select query execution
+		if($resultc = mysqli_query($linkc, $sql)){
+			if(mysqli_num_rows($resultc) > 0){
+				while($rowc = mysqli_fetch_array($resultc)){
+					$ss = $rowc['NumInactive'];
+				}
+				mysqli_free_result($resultc);  // Close result set
+			} 
+		}
+		mysqli_close($linkc);  // close connection
+		return $ss;
+	}
+	
+	$numi = NumInactive();
+	$numpre = "are";
+	if ($numi==1) {
+		$numpre = "is";
+	}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,7 +60,7 @@
 	<h1>Pathfinders <?php echo whologgedin(); ?></h1>
 	<div class="loginbox">[ <a href='plogin.php'><?php echo laction(); ?></a> ]</div>
 	<p>The Pathfinder club started in the past century as the <em>MV</em> club and the focus has always been on Missionary Volunteer Youth.</p>
-	<img src="../pf/mvemblem.png" alt="Pathfinder Emblem" style="width:180px;height:188px;float:left;"} 
+	<img src="mvemblem.png" alt="Pathfinder Emblem" style="width:180px;height:188px;float:left;"} 
 	<p><h4>About this site</h4>
 	This is a development site. That is to say that the developers are building the way it works
 	as they go. The site is intented to allow Parent(s), pathfinders or staff to register members. Ideally we 
@@ -70,15 +101,18 @@
 				echo "<li><a href='changemypass.php'>Change Password</a></li>";
 				echo "<li><a href='ped.php'>Edit Members</a></li>";
 				echo "<li><a href='pfam.php'>Edit Families</a></li>";
+				echo "<li>There " . $numpre . " ". $numi . " inactive users. <a href='pactivate.php'>Make inactive users active</a></li>";
 			}
 		?>
 	</ul>
 	<hr>
 	<ul>
-		<li><a href="../">Site Home</a></li>
+		<li><a href='../'>Site Home</a></li>
 	</ul>
 	<hr>
-	&nbsp;User = <?php echo $_SESSION["pmMail"]; ?><br />
-	Role = <?php echo $_SESSION["pmRole"]; ?>
+	&nbsp;User = <?php if (isset($_SESSION['pmMail']))
+		echo $_SESSION["pmMail"]; ?><br />
+	Role = <?php if (isset($_SESSION['pmRole'])) 
+		echo $_SESSION["pmRole"]; ?>
 	</body>
-</html>
+	</html>
