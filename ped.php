@@ -2,13 +2,23 @@
 	// ped.php   - Edit Members
 	session_start();
 	$role = $_SESSION['pmRole'];
-	$club = $_SESSION['pmClub'];
+	if (isset($_SESSION['pmClubf'])) 
+		$club = $_SESSION['pmClubf'];
+	else
+		$club = "";
 	$name = "";
 	$email = "";
 	$ssql = "+";
 	$active = "";
 	$trole = "0";
-	$tpm = "0";              // temp member
+	
+	$tpm = "";
+	if (isset($_POST['members']))
+		$tpm = $_POST['members'];              // temp member
+	else
+		$tpm = "0";
+	
+	
 	$tfamily = 99;          // temp family
 	echo "<br>role = " . $role;
 	echo "<br>Club = " . $club;
@@ -20,7 +30,10 @@
 			echo "<input type='submit' />";
 		} else {
 			if ($_POST['refresh']) {
-				$ssql = "refresh pressed.";
+				$ssql = "refresh pressed. " . $_POST['members'];
+				$tpm = $_POST['members'];
+				// Save the fields back to pmMembrs ...
+				echo showmember($tpm);
 			} else {
 				$ssql = "refresh not pressed";
 			}
@@ -52,6 +65,38 @@
 	
 	// Select (dropdown to all clubs)
 	function selectclub($dftclub) {
+		//SELECT pcId, pcName FROM pfClubs ORDER BY pcName
+		require 'dbinfo.php';
+		$linkc = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
+		
+		// Check connection
+		if($linkc === false){
+			die("ERROR: Could not connect. " . mysqli_connect_error());
+		}		 
+		// Attempt select query execution
+		$sql = "SELECT pcId, pcName FROM paClubs ORDER BY pcName";
+		if($resultc = mysqli_query($linkc, $sql)){
+			$ss = "";
+			if(mysqli_num_rows($resultc) > 0){
+				$ss = "<select name='pmClubf'>\n";
+				while($rowc = mysqli_fetch_array($resultc)){
+					if ($rowc['pcId']===$dftclub) {
+						$ss .= "<option selected value='" . $rowc['pcId'] . "'>" . $rowc['pcName'] . "</option>\n";
+					} else {
+						$ss .= "<option value='" . $rowc['pcId'] . "'>" . $rowc['pcName'] . "</option>\n";
+					}
+				}
+				$ss .= "</select>\n";
+				// Close result set
+				mysqli_free_result($resultc);
+			} 
+		}
+		mysqli_close($linkc);
+		return $ss;
+	}
+	
+		// Select (dropdown to all clubs)
+	function selectclubm($dftclub) {
 		//SELECT pcId, pcName FROM pfClubs ORDER BY pcName
 		require 'dbinfo.php';
 		$linkc = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
@@ -109,6 +154,46 @@
 			} 
 		}		
 		mysqli_close($linkm); // Close connection
+		return $ss;
+	}
+	
+	// Shows a table with all of the families listed
+	function showmember($pm) {
+		//SELECT pcId, pcName FROM pfClubs ORDER BY pcName
+		require 'dbinfo.php';
+		$link = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
+		
+		// Check connection
+		if($link === false){
+			die("ERROR: Could not connect. " . mysqli_connect_error());
+		}		 
+		// Attempt select query execution
+		$sql = "SELECT pmClub, pmName, pmUnit, pmMail, pmActive, pmRole, pmFamily FROM `pamembrs` WHERE pmId = $pm ";
+		if($resultc = mysqli_query($link, $sql)){
+			$ss = "";
+			if(mysqli_num_rows($resultc) > 0){
+				$ss = "<table>\n";
+				$ss .= "  <tr>\n";
+				$ss .= "    <th>ID</th><th>Club</th><th>Name</th><th>Unit</th><th>Mail</th><th>Active</th><th>Role</th><th>Family</th>\n";
+				$ss .= "  </tr>\n";
+				while($rowc = mysqli_fetch_array($resultc)){
+					$ss .= "  <tr>\n";
+					$ss .= "    <td>" . $pm . "<input type='hidden' name='pmId' value ='" . $pm . "' ></td>\n";
+					$ss .= "    <td>" . selectclubm($rowc['pmClub']) . "</td>\n";
+					$ss .= "    <td><input type='text' name='pmName' value='" . $rowc['pmName'] . "' ></td>\n";
+					$ss .= "    <td><input type='text' name='pmUnit' value='" . $rowc['pmUnit'] . "' ></td>\n";
+					$ss .= "    <td><input type='text' name='pmMail' value='" . $rowc['pmMail'] . "' ></td>\n";
+					$ss .= "    <td><input type='text' name='pmActive' value='" . $rowc['pmActive'] . "' ></td>\n";
+					$ss .= "    <td><input type='text' name='pmRole' value='" . $rowc['pmRole'] . "' ></td>\n";
+					$ss .= "    <td><input type='text' name='pmFamily' value='" . $rowc['pmFamily'] . "' ></td>\n";
+					$ss .= "  </tr>\n";
+				}
+				$ss .= "</table>\n";
+				// Close result set
+				mysqli_free_result($resultc);
+			} 
+		}
+		mysqli_close($link);
 		return $ss;
 	}
 ?>

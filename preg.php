@@ -90,17 +90,21 @@
 	}
 	
 	function isvalid($email, $pwd) {
-		$password = trim($pwd);
-		if (strlen($password) < 1) {
-			return false;
-		} else if (!isemail($email)) {
+		//$password = trim($pwd);
+		//if (strlen($password) < 1) {
+		//	return false;
+		//} else if (!isemail($email)) {
+		//	return true;
+		//}
+		//else if (email_found($email) > 0) {
+		//	return false;
+		//} else {
+		//	return true;
+		//}		
+		if (strlen($email) > 0)
 			return true;
-		}
-		else if (email_found($email) > 0) {
+		else
 			return false;
-		} else {
-			return true;
-		}		
 	}
 	
 	function email_found($email) {
