@@ -19,27 +19,46 @@
 	
 	// return a true or false if the provided user can edit members
 	function canedituser($rol) {
-		require 'dbinfo.php';
-		$linkc = mysqli_connect($dbserver, $dbuser, $dbpass, $database);
-		// Check connection
+		$ss = "";                                                       // initialize variable
+		require 'dbinfo.php';                                           // database login info
+		$linkc = mysqli_connect($dbserver, $dbuser, $dbpass, $database);// connect object
 		if($linkc === false){
-			die("ERROR: Could not connect. " . mysqli_connect_error());
+			die("ERROR: Could not connect. " . mysqli_connect_error()); // Check connection
 		}		 
-		// Query to find out if the $who can edit users
-		$sql = "SELECT prEditUsers FROM paRoles WHERE prId = $rol ";
-		// Attempt select query execution
-		if($resultc = mysqli_query($linkc, $sql)){
-			$ss = "";
+		$sql = "SELECT prEditUsers FROM paRoles WHERE prId = $rol ";    // Query to find out if the $who can edit users
+		if($resultc = mysqli_query($linkc, $sql)){                      // Attempt select query execution
+			
 			if(mysqli_num_rows($resultc) > 0){
-				while($rowc = mysqli_fetch_array($resultc)){
-					$ss = $rowc['prEditUsers'];
+				while($rowc = mysqli_fetch_array($resultc)){             // Loop through select results
+					$ss = $rowc['prEditUsers'];                          // ****** FETCH RESULT *************************
 				}
-				mysqli_free_result($resultc);  // Close result set
+				mysqli_free_result($resultc);                            // Close result set
 			} 
 		}
-		mysqli_close($linkc);  // close connection
-		return $ss;
+		mysqli_close($linkc);                                            // close connection
+		return $ss;                                                      // Return value
 	}
 	
+		// return a true or false if the provided user can edit members
+	function caneditusers($rol) {
+		$ss = "";                                                       // initialize variable
+		require 'dbinfo.php';                                           // database login info
+		$linkc = mysqli_connect($dbserver, $dbuser, $dbpass, $database);// connect object
+		if($linkc === false){
+			die("ERROR: Could not connect. " . mysqli_connect_error()); // Check connection
+		}		 
+		$sql = "SELECT prEditUsers FROM paRoles WHERE prId = $rol ";    // Query to find out if the $who can edit users
+		if($resultc = mysqli_query($linkc, $sql)){                      // Attempt select query execution
+			
+			if(mysqli_num_rows($resultc) > 0){
+				while($rowc = mysqli_fetch_array($resultc)){             // Loop through select results
+					$ss = $rowc['prMultiCampers'];                          // ****** FETCH RESULT *************************
+				}
+				mysqli_free_result($resultc);                            // Close result set
+			} 
+		}
+		mysqli_close($linkc);                                            // close connection
+		return $ss;                                                      // Return value
+	}
 
 ?>
